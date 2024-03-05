@@ -89,13 +89,16 @@ class Db:
         fieldnames = ["first_name", "last_name", "passport_num", "phone", "address", "job", "password"]
         is_empty = not os.path.isfile(self.accounts_path) or os.path.getsize(self.accounts_path) == 0
 
-        with open(self.accounts_path, 'a', newline='') as csv_file:
-            writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
+        try:
+            with open(self.accounts_path, 'a', newline='') as csv_file:
+                writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
 
-            if is_empty:
-                writer.writeheader()
+                if is_empty:
+                    writer.writeheader()
 
-            writer.writerows([account])
+                writer.writerows([account])
+        except FileNotFoundError:
+            print("Error: File 'accounts.csv' not found.", FileNotFoundError)
 
     def get_accounts(self):
         self.accounts_df = pd.read_csv("accounts.csv")
