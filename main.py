@@ -98,8 +98,9 @@ class Db:
             writer.writerows([account])
 
     def get_accounts(self):
-        self.accounts_df = pd.read_csv("accounts.csv")
-        return self.accounts_df
+        if os.path.isfile(self.accounts_path):
+            self.accounts_df = pd.read_csv("accounts.csv")
+            return self.accounts_df
 
 
 class SafeBank:
